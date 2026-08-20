@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pour Lauriuche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Marck+Script&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FBF3EC;
+    --blush:#E9B7B4;
+    --plum:#5B3247;
+    --deep-plum:#3D2033;
+    --gold:#C99A4A;
+    --sage:#8C9A7B;
+    --ink:#3D2033;
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--cream);
+    color:var(--ink);
+    font-family:'Poppins',sans-serif;
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+
+  /* ---------- Petals ambient layer ---------- */
+  #petals{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden;}
+  .petal{
+    position:absolute;top:-5%;
+    width:14px;height:14px;
+    background:var(--blush);
+    border-radius:0 60% 0 60%;
+    opacity:0.7;
+    animation:fall linear infinite;
+  }
+  @keyframes fall{
+    to{transform:translateY(110vh) rotate(360deg);}
+  }
+
+  /* ---------- Envelope intro ---------- */
+  #envelope-screen{
+    position:fixed;inset:0;
+    background:linear-gradient(160deg,var(--deep-plum),var(--plum));
+    z-index:100;
+    display:flex;align-items:center;justify-content:center;
+    transition:opacity 0.9s ease, visibility 0.9s ease;
+  }
+  #envelope-screen.hidden{opacity:0;visibility:hidden;}
+
+  .envelope-wrap{
+    text-align:center;
+    color:var(--cream);
+  }
+
+  .envelope{
+    width:220px;height:150px;
+    margin:0 auto 34px;
+    position:relative;
+    cursor:pointer;
+    transition:transform 0.3s ease;
+  }
+  .envelope:hover{transform:translateY(-4px) scale(1.02);}
+
+  .env-body{
+    position:absolute;inset:0;
+    background:var(--blush);
+    border-radius:6px;
+    box-shadow:0 20px 40px rgba(0,0,0,0.35);
+  }
+  .env-flap{
+    position:absolute;top:0;left:0;right:0;
+    height:0;
+    border-left:110px solid transparent;
+    border-right:110px solid transparent;
+    border-top:85px solid #d99e9a;
+    transform-origin:top;
+    transition:transform 0.6s ease;
+    z-index:3;
+  }
+  .env-flap.open{transform:rotateX(180deg);}
+  .env-heart{
+    position:absolute;
+    top:58px;left:50%;
+    transform:translateX(-50%);
+    font-size:22px;
+    color:var(--deep-plum);
+    z-index:2;
+  }
+
+  .envelope-wrap p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.15rem;
+    letter-spacing:0.04em;
+    opacity:0.85;
+  }
+  .envelope-wrap .eyebrow{
+    font-family:'Marck Script', cursive;
+    font-size:1.6rem;
+    display:block;
+    margin-bottom:6px;
+    color:var(--gold);
+  }
+
+  /* ---------- Main content ---------- */
+  main{
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  main.visible{opacity:1;}
+
+  section{
+    padding:120px 8vw;
+    position:relative;
+  }
+
+  /* Hero */
+  .hero{
+    min-height:90vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding-top:60px;
+  }
+  .hero .eyebrow{
+    font-family:'Marck Script', cursive;
+    font-size:1.7rem;
+    color:var(--gold);
+    margin-bottom:10px;
+    opacity:0;
+    animation:riseIn 1s ease forwards 0.2s;
+  }
+  .hero h1{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:clamp(3rem,9vw,6.5rem);
+    color:var(--plum);
+    line-height:1;
+    opacity:0;
+    animation:riseIn 1.1s ease forwards 0.45s;
+  }
+  .hero .sub{
+    margin-top:26px;
+    max-width:480px;
+    font-size:1.02rem;
+    font-weight:300;
+    line-height:1.8;
+    color:#6b4f5e;
+    opacity:0;
+    animation:riseIn 1.1s ease forwards 0.75s;
+  }
+  @keyframes riseIn{
+    from{opacity:0;transform:translateY(18px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  .scroll-hint{
+    margin-top:60px;
+    font-size:0.75rem;
+    letter-spacing:0.25em;
+    text-transform:uppercase;
+    color:var(--sage);
+    opacity:0;
+    animation:riseIn 1s ease forwards 1.1s, bob 2.2s ease-in-out infinite 1.5s;
+  }
+  @keyframes bob{
+    0%,100%{transform:translateY(0);}
+    50%{transform:translateY(6px);}
+  }
+
+  /* Letter section */
+  .letter{
+    max-width:640px;
+    margin:0 auto;
+    background:#fff;
+    border-radius:2px;
+    padding:70px 60px;
+    box-shadow:0 30px 60px -20px rgba(93,50,71,0.25);
+    position:relative;
+  }
+  .letter::before{
+    content:"";
+    position:absolute;
+    top:0;left:0;right:0;
+    height:6px;
+    background:linear-gradient(90deg,var(--blush),var(--gold),var(--sage));
+  }
+  .letter .to{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.4rem;
+    color:var(--plum);
+    margin-bottom:28px;
+  }
+  .letter p{
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.28rem;
+    line-height:2;
+    color:#4a2f3d;
+    margin-bottom:22px;
+  }
+  .letter .signature{
+    margin-top:40px;
+    font-family:'Marck Script', cursive;
+    font-size:1.8rem;
+    color:var(--gold);
+    text-align:right;
+  }
+
+  .reveal{
+    opacity:0;
+    transform:translateY(30px);
+    transition:opacity 0.9s ease, transform 0.9s ease;
+  }
+  .reveal.in{
+    opacity:1;
+    transform:translateY(0);
+  }
+
+  /* Gallery */
+  .gallery-head{
+    text-align:center;
+    margin-bottom:60px;
+  }
+  .gallery-head .eyebrow{
+    font-family:'Marck Script', cursive;
+    color:var(--gold);
+    font-size:1.5rem;
+  }
+  .gallery-head h2{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:600;
+    font-size:2.6rem;
+    color:var(--plum);
+  }
+
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+    gap:26px;
+    max-width:1000px;
+    margin:0 auto;
+  }
+  .photo-card{
+    position:relative;
+    border-radius:10px;
+    overflow:hidden;
+    aspect-ratio:4/5;
+    background:linear-gradient(135deg,var(--blush),#f3d9d3);
+    box-shadow:0 16px 34px -14px rgba(93,50,71,0.35);
+    transition:transform 0.45s ease, box-shadow 0.45s ease;
+  }
+  .photo-card:nth-child(even){transform:rotate(-1.4deg);}
+  .photo-card:nth-child(odd){transform:rotate(1.4deg);}
+  .photo-card:hover{
+    transform:scale(1.04) rotate(0deg);
+    box-shadow:0 26px 46px -14px rgba(93,50,71,0.45);
+    z-index:2;
+  }
+  .photo-card img{
+    width:100%;height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .photo-card .placeholder-label{
+    position:absolute;inset:0;
+    display:flex;align-items:center;justify-content:center;
+    flex-direction:column;
+    gap:8px;
+    color:var(--deep-plum);
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    text-align:center;
+    padding:16px;
+  }
+  .photo-card .placeholder-label span{font-size:2rem;}
+  .photo-card .caption{
+    position:absolute;bottom:0;left:0;right:0;
+    padding:16px 14px 12px;
+    background:linear-gradient(to top, rgba(61,32,51,0.75), transparent);
+    color:#fff;
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:1.02rem;
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity 0.3s ease, transform 0.3s ease;
+  }
+  .photo-card:hover .caption{opacity:1;transform:translateY(0);}
+
+  /* Closing */
+  .closing{
+    text-align:center;
+    padding-bottom:140px;
+  }
+  .closing .heart-anim{
+    font-size:2.6rem;
+    color:var(--blush);
+    display:inline-block;
+    animation:pulse 1.8s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{transform:scale(1);}
+    50%{transform:scale(1.18);}
+  }
+  .closing h3{
+    font-family:'Cormorant Garamond',serif;
+    font-weight:500;
+    font-size:1.9rem;
+    color:var(--plum);
+    margin-top:18px;
+  }
+  .closing p.small{
+    margin-top:10px;
+    font-size:0.85rem;
+    color:var(--sage);
+    letter-spacing:0.05em;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  @media (max-width:600px){
+    .letter{padding:48px 26px;}
+    section{padding:90px 6vw;}
+  }
+</style>
+</head>
+<body>
+
+<div id="petals"></div>
+
+<div id="envelope-screen">
+  <div class="envelope-wrap">
+    <span class="eyebrow">Pour toi,</span>
+    <p style="margin-bottom:30px;">Lauriuche</p>
+    <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Ouvrir l'enveloppe">
+      <div class="env-flap" id="envFlap"></div>
+      <div class="env-body"></div>
+      <div class="env-heart">♥</div>
+    </div>
+    <p>clique sur l'enveloppe</p>
+  </div>
+</div>
+
+<main id="main">
+
+  <section class="hero">
+    <span class="eyebrow">une petite pensée</span>
+    <h1>Pour Lauriuche</h1>
+    <p class="sub">Quelques mots, quelques images, juste pour te rappeler à quel point tu comptes.</p>
+    <span class="scroll-hint">défiler ↓</span>
+  </section>
+
+  <section>
+    <div class="letter reveal" id="letterBlock">
+      <p class="to">Chère Lauriuche,</p>
+      <p>Il y a des personnes qui traversent notre vie sans vraiment y entrer, et puis il y a toi, qui t'y es installée avec ta lumière, sans même prévenir.</p>
+      <p>Ta présence a cette douceur rare qui rend les journées ordinaires un peu plus belles. Ton rire, ta manière d'écouter, ta façon d'être simplement toi-même, tout ça compte plus que tu ne l'imagines.</p>
+      <p>Je voulais juste, aujourd'hui, prendre un instant pour te le dire : tu es précieuse, exactement telle que tu es. Merci d'exister, merci d'être là.</p>
+      <p class="signature">avec toute mon affection</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="gallery-head">
+      <span class="eyebrow">souvenirs</span>
+      <h2>Quelques instants</h2>
+    </div>
+    <div class="gallery" id="gallery"></div>
+  </section>
+
+  <section class="closing">
+    <div class="heart-anim reveal">♥</div>
+    <h3 class="reveal">À toi, aujourd'hui et toujours.</h3>
+    <p class="small reveal">fait avec soin, pour Lauriuche</p>
+  </section>
+
+</main>
+
+<script>
+  // ---------- Petals ----------
+  const petalLayer = document.getElementById('petals');
+  const PETAL_COUNT = 16;
+  for(let i=0;i<PETAL_COUNT;i++){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.animationDuration = (9 + Math.random()*10) + 's';
+    p.style.animationDelay = (Math.random()*10) + 's';
+    p.style.width = p.style.height = (8 + Math.random()*10) + 'px';
+    p.style.opacity = 0.35 + Math.random()*0.4;
+    petalLayer.appendChild(p);
+  }
+
+  // ---------- Envelope open ----------
+  const envelope = document.getElementById('envelope');
+  const envFlap = document.getElementById('envFlap');
+  const envScreen = document.getElementById('envelope-screen');
+  const mainEl = document.getElementById('main');
+
+  function openEnvelope(){
+    envFlap.classList.add('open');
+    setTimeout(()=>{
+      envScreen.classList.add('hidden');
+      mainEl.classList.add('visible');
+      revealOnScroll();
+    }, 550);
+  }
+  envelope.addEventListener('click', openEnvelope);
+  envelope.addEventListener('keypress', (e)=>{ if(e.key==='Enter' || e.key===' ') openEnvelope(); });
+
+  // ---------- Gallery: replace the `src` fields below with real photo paths/URLs ----------
+  // Si aucune image n'est fournie, un joli placeholder s'affiche à la place.
+  const photos = [
+    { src: "", caption: "un joli sourire" },
+    { src: "", caption: "un moment simple" },
+    { src: "", caption: "un souvenir précieux" },
+    { src: "", caption: "un éclat de rire" },
+    { src: "", caption: "juste toi" }
+  ];
+
+  const gallery = document.getElementById('gallery');
+  photos.forEach(photo=>{
+    const card = document.createElement('div');
+    card.className = 'photo-card';
+    if(photo.src){
+      card.innerHTML = `<img src="${photo.src}" alt="${photo.caption}"><div class="caption">${photo.caption}</div>`;
+    } else {
+      card.innerHTML = `<div class="placeholder-label"><span>❀</span>${photo.caption}</div>`;
+    }
+    gallery.appendChild(card);
+  });
+
+  // ---------- Scroll reveal ----------
+  function revealOnScroll(){
+    const items = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('in'); }
+      });
+    }, {threshold:0.2});
+    items.forEach(i=>obs.observe(i));
+  }
+</script>
+
+</body>
+</html>
