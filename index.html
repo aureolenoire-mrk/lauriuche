@@ -285,18 +285,21 @@
   .photo-card .placeholder-label span{font-size:2rem;}
   .photo-card .caption{
     position:absolute;bottom:0;left:0;right:0;
-    padding:16px 14px 12px;
-    background:linear-gradient(to top, rgba(61,32,51,0.75), transparent);
+    padding:34px 18px 18px;
+    background:linear-gradient(to top, rgba(61,32,51,0.92), rgba(61,32,51,0.5) 60%, transparent);
     color:#fff;
     font-family:'Cormorant Garamond',serif;
     font-style:italic;
-    font-size:1.02rem;
+    font-weight:500;
+    font-size:1.5rem;
     opacity:0;
-    transform:translateY(8px);
-    transition:opacity 0.3s ease, transform 0.3s ease;
-  }
-  .photo-card:hover .caption{opacity:1;transform:translateY(0);}
-
+    transform:translateY(65%);
+    transition:opacity 0.9s cubic-bezier(.16,.84,.44,1), transform 0.9s cubic-bezier(.16,.84,.44,1);
+}
+.photo-card.caption-in .caption{
+    opacity:1;
+    transform:translateY(0);
+}
   /* Closing */
   .closing{
     text-align:center;
@@ -499,9 +502,10 @@
   lbClose.addEventListener('click', closeLightbox);
   document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') closeLightbox(); });
 
-  photos.forEach(photo=>{
+photos.forEach((photo, index)=>{
     const card = document.createElement('div');
     card.className = 'photo-card';
+    card.dataset.index = index;
     if(photo.src){
       card.innerHTML = `<img src="${photo.src}" alt="${photo.caption}"><div class="caption">${photo.caption}</div>`;
       card.addEventListener('click', ()=> openLightbox(photo.src, photo.caption));
@@ -519,6 +523,18 @@
       });
     }, {threshold:0.2});
     items.forEach(i=>obs.observe(i));
+
+    const cards = document.querySelectorAll('.photo-card');
+    const cardObs = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const delay = parseInt(e.target.dataset.index || 0) * 120;
+          setTimeout(()=> e.target.classList.add('caption-in'), 400 + delay);
+          cardObs.unobserve(e.target);
+        }
+      });
+    }, {threshold:0.4});
+    cards.forEach(c=>cardObs.observe(c));
   }
 </script>
 
