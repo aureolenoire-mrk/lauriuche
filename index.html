@@ -292,12 +292,10 @@
     font-style:italic;
     font-weight:500;
     font-size:1.5rem;
-    opacity:0;
-    transform:translateY(65%);
-    transition:opacity 0.9s cubic-bezier(.16,.84,.44,1), transform 0.9s cubic-bezier(.16,.84,.44,1);
+    transform:translateY(-750px);
+    transition:transform 1.3s cubic-bezier(.22,.61,.36,1);
 }
 .photo-card.caption-in .caption{
-    opacity:1;
     transform:translateY(0);
 }
   /* Closing */
@@ -373,6 +371,46 @@
   transition:opacity 0.2s ease;
 }
 #lightbox .lb-close:hover{opacity:1;}
+
+  #musicToggle{
+  position:fixed;
+  bottom:24px;right:24px;
+  width:52px;height:52px;
+  border-radius:50%;
+  border:none;
+  background:var(--plum);
+  color:var(--cream);
+  font-size:1.4rem;
+  cursor:pointer;
+  box-shadow:0 10px 24px rgba(61,32,51,0.4);
+  z-index:150;
+  transition:transform 0.25s ease, background 0.25s ease;
+}
+#musicToggle:hover{transform:scale(1.08);}
+#musicToggle.playing{
+  background:var(--gold);
+  animation:musicPulse 1.6s ease-in-out infinite;
+}
+@keyframes musicPulse{
+  0%,100%{transform:scale(1);}
+  50%{transform:scale(1.1);}
+}
+
+    const bgMusic = document.getElementById('bgMusic');
+  const musicToggle = document.getElementById('musicToggle');
+  let isPlaying = false;
+  musicToggle.addEventListener('click', ()=>{
+    if(isPlaying){
+      bgMusic.pause();
+      musicToggle.classList.remove('playing');
+      musicToggle.textContent = '♪';
+    } else {
+      bgMusic.play();
+      musicToggle.classList.add('playing');
+      musicToggle.textContent = '❙❙';
+    }
+    isPlaying = !isPlaying;
+  });
 </style>
 </head>
 <body>
@@ -432,6 +470,11 @@
 
 </main>
 
+  <audio id="bgMusic" loop>
+  <source src="musique.mp3" type="audio/mpeg">
+</audio>
+<button id="musicToggle" aria-label="Jouer la musique">♪</button>
+  
   <div id="lightbox">
   <span class="lb-close" id="lbClose">&times;</span>
   <img id="lbImg" src="" alt="">
