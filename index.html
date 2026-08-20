@@ -396,21 +396,6 @@
   50%{transform:scale(1.1);}
 }
 
-    const bgMusic = document.getElementById('bgMusic');
-  const musicToggle = document.getElementById('musicToggle');
-  let isPlaying = false;
-  musicToggle.addEventListener('click', ()=>{
-    if(isPlaying){
-      bgMusic.pause();
-      musicToggle.classList.remove('playing');
-      musicToggle.textContent = '♪';
-    } else {
-      bgMusic.play();
-      musicToggle.classList.add('playing');
-      musicToggle.textContent = '❙❙';
-    }
-    isPlaying = !isPlaying;
-  });
 </style>
 </head>
 <body>
@@ -579,6 +564,21 @@ photos.forEach((photo, index)=>{
     }, {threshold:0.4});
     cards.forEach(c=>cardObs.observe(c));
   }
+const bgMusic = document.getElementById('bgMusic');
+const musicToggle = document.getElementById('musicToggle');
+let isPlaying = false;
+musicToggle.addEventListener('click', ()=>{
+  if(isPlaying){
+    bgMusic.pause();
+    musicToggle.classList.remove('playing');
+    musicToggle.textContent = '♪';
+  } else {
+    bgMusic.play();
+    musicToggle.classList.add('playing');
+    musicToggle.textContent = '❙❙';
+  }
+  isPlaying = !isPlaying;
+});
 </script>
 
 </body>
